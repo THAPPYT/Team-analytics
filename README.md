@@ -1,157 +1,389 @@
 # 🚀 TeamPulse — Team Analytics Dashboard
 
-A full-featured Next.js 14 analytics dashboard with JWT auth, Redux Toolkit, and json-server mock API.
+A modern **production-style analytics dashboard** built with **Next.js 14**, featuring secure JWT authentication, employee management, interactive analytics, and scalable frontend architecture.
+
+Designed to simulate a real-world internal admin platform used by organizations to manage teams, monitor employee performance, and visualize business insights.
 
 ---
 
-## ✨ Features
+# 🌟 Features
 
-### Authentication
-- JWT-based login & signup with **HTTP-only cookie** storage
-- **Next.js Middleware** for route protection (protected `/dashboard/*`)
-- Auto-redirect: authenticated users → dashboard, unauthenticated → login
-- Token verification on every protected request
+## 🔐 Authentication & Authorization
 
-### Employee Management
-- Full CRUD: Create, Read, Update, Delete employees
-- **Debounced search** (450ms) by employee name
-- **Server-side filters**: department, status
-- **Pagination** with page controls
-- **Zod validation** on all form fields
-- Modal-based edit/add forms with proper error display
-
-### Analytics & Charts (Recharts)
-- Revenue vs Expenses vs Profit — Area chart (full year)
-- User Growth Trend — Line chart
-- Acquisition vs Churn — Bar chart
-- Department Headcount — Pie/Donut chart
-- Performance Distribution — Progress bars
-- Stat cards on overview page
-
-### Tech Stack
-- **Next.js 14** (App Router, Server Components)
-- **Redux Toolkit** — global state (auth, employees, analytics)
-- **React Hook Form + Zod** — form validation
-- **json-server** — mock REST API with pagination headers
-- **Axios** — API client with JWT interceptors
-- **Recharts** — all charts
-- **jose** — JWT sign/verify (Edge-compatible)
-- **TypeScript** throughout
+- JWT-based authentication flow
+- Secure route protection using **Next.js Middleware**
+- Login & Signup forms with validation
+- Persistent sessions using cookies
+- Automatic redirects based on auth state
+- Token verification on protected routes
 
 ---
 
-## 📁 Project Structure
+## 👥 Employee Management
 
-```
+- Full CRUD operations
+- Debounced employee search
+- Department & status filters
+- Server-side pagination
+- Form validation with Zod
+- Modal-based add/edit forms
+- Dynamic performance tracking
+
+---
+
+## 📊 Analytics Dashboard
+
+### Revenue Analytics
+- Revenue vs Expenses tracking
+- Profit monitoring
+- Monthly business growth trends
+
+### User Metrics
+- Active users
+- New user acquisition
+- Churn analytics
+
+### Team Insights
+- Department-wise employee distribution
+- Employee performance tracking
+- Organization overview cards
+
+---
+
+## 🎨 UI / UX Highlights
+
+- Fully responsive dashboard
+- Modern dark-themed interface
+- Glassmorphism design system
+- Skeleton loaders
+- Smooth animations
+- Reusable component architecture
+- Typography using **Syne** & **DM Sans**
+
+---
+
+# 🛠 Tech Stack
+
+| Category | Technology |
+|---|---|
+| Framework | Next.js 14 |
+| Language | TypeScript |
+| Styling | Tailwind CSS + Custom CSS |
+| State Management | Redux Toolkit |
+| Forms | React Hook Form |
+| Validation | Zod |
+| Charts | Recharts |
+| Authentication | JWT + jose |
+| Mock Backend | json-server |
+| API Client | Axios |
+| Routing Protection | Middleware |
+
+---
+
+# 📁 Project Structure
+
+```bash
 src/
 ├── app/
-│   ├── api/auth/          # Next.js API Routes (login, signup)
-│   ├── auth/login/        # Login page
-│   ├── auth/signup/       # Signup page
+│   ├── api/
+│   │   └── auth/
+│   │       ├── login/
+│   │       └── signup/
+│   │
+│   ├── auth/
+│   │   ├── login/
+│   │   └── signup/
+│   │
 │   └── dashboard/
-│       ├── layout.tsx     # Sidebar layout (protected)
-│       ├── page.tsx       # Overview with stat cards + mini charts
-│       ├── employees/     # Employee listing + CRUD
-│       └── analytics/     # Full analytics page
+│       ├── analytics/
+│       ├── employees/
+│       ├── layout.tsx
+│       └── page.tsx
+│
 ├── components/
-│   ├── ReduxProvider.tsx  # Client-side Redux setup
-│   └── employees/
-│       └── EmployeeModal.tsx  # Edit/Add modal
+│   ├── employees/
+│   └── ReduxProvider.tsx
+│
 ├── hooks/
-│   └── useDebounce.ts     # Custom debounce hook
+│   └── useDebounce.ts
+│
 ├── lib/
-│   ├── jwt.ts             # JWT sign/verify (jose)
-│   └── apiClient.ts       # Axios instance with interceptors
+│   ├── apiClient.ts
+│   └── jwt.ts
+│
 ├── store/
-│   ├── index.ts           # configureStore + typed hooks
+│   ├── index.ts
 │   └── slices/
-│       ├── authSlice.ts   # Auth state + thunks
-│       ├── employeeSlice.ts  # Employee CRUD + filters
-│       └── analyticsSlice.ts # Charts data
+│       ├── authSlice.ts
+│       ├── employeeSlice.ts
+│       └── analyticsSlice.ts
+│
 ├── types/
-│   └── index.ts           # All TypeScript interfaces
-└── middleware.ts           # JWT route protection (Edge Runtime)
+│   └── index.ts
+│
+└── middleware.ts
 ```
 
 ---
 
-## 🏁 Getting Started
+# 🏗 Architecture Explanation
 
-### 1. Install dependencies
+The application follows a **feature-based scalable architecture** where logic is separated into dedicated modules.
+
+---
+
+## 🔄 Authentication Flow
+
+```text
+User Login
+   ↓
+Next.js API Route
+   ↓
+Credential Validation
+   ↓
+JWT Generation (jose)
+   ↓
+Cookie Storage
+   ↓
+Middleware Verification
+   ↓
+Protected Dashboard Access
+```
+
+### Why `jose`?
+
+`jose` is Edge-runtime compatible, making it suitable for authentication inside Next.js Middleware.
+
+---
+
+## 🧠 State Management
+
+Redux Toolkit handles:
+
+- Authentication state
+- Employee data
+- Analytics data
+- Pagination
+- Filters
+- Async loading states
+
+Async operations are managed using:
+
+```ts
+createAsyncThunk()
+```
+
+---
+
+## 📊 Data Visualization
+
+Analytics are built using **Recharts**:
+
+- Area Charts
+- Bar Charts
+- Line Charts
+- Pie Charts
+- Progress indicators
+
+All charts are responsive and optimized for different screen sizes.
+
+---
+
+# ⚖️ Tradeoffs & Technical Decisions
+
+| Decision | Reason | Tradeoff |
+|---|---|---|
+| json-server | Faster mock backend setup | No real persistence |
+| Redux Toolkit | Better scalability | More boilerplate |
+| JWT Cookie Auth | Simulates production auth | Middleware complexity |
+| App Router | Modern Next.js architecture | Learning curve |
+| Tailwind + Custom CSS | Faster UI development | Mixed styling system |
+
+---
+
+# 🚧 Challenges Faced
+
+## 1. Middleware Authentication
+
+Handling authentication with Next.js App Router required Edge-compatible JWT verification using:
+
+```bash
+jose
+```
+
+Traditional JWT libraries were not fully compatible with middleware runtime.
+
+---
+
+## 2. Managing Complex State
+
+Handling:
+- employee CRUD
+- filters
+- analytics
+- pagination
+- loading states
+
+became difficult using local state alone, so Redux Toolkit was introduced.
+
+---
+
+## 3. Responsive Charts
+
+Making charts responsive across mobile and tablet layouts required:
+- ResponsiveContainer
+- adaptive layouts
+- custom tooltip handling
+
+---
+
+## 4. Debounced Search
+
+To reduce unnecessary API calls while typing, a custom debounce hook was implemented.
+
+---
+
+# 🔐 Security Features
+
+- Protected dashboard routes
+- JWT verification middleware
+- Form validation using Zod
+- Secure token handling
+- Axios request interceptors
+
+---
+
+# 🎨 Design System
+
+The UI is built using reusable design utilities:
+
+```css
+:root {
+  --bg-0: #080c18;
+  --brand: #5b73ff;
+  --accent: #00d4b4;
+  --danger: #ff4d6d;
+}
+```
+
+Features:
+- glassmorphism cards
+- consistent spacing system
+- reusable buttons
+- responsive grid layouts
+- dark dashboard theme
+
+---
+
+# 📦 Setup Instructions
+
+## 1️⃣ Clone Repository
+
+```bash
+git clone https://github.com/your-username/teampulse-dashboard.git
+cd teampulse-dashboard
+```
+
+---
+
+## 2️⃣ Install Dependencies
+
 ```bash
 npm install
 ```
 
-### 2. Run json-server (mock API) + Next.js dev in parallel
+---
+
+## 3️⃣ Run Development Servers
+
+Run both Next.js and json-server together:
+
 ```bash
 npm run dev:full
 ```
 
-Or separately:
-```bash
-# Terminal 1 — json-server on :3001
-npm run server
+OR run separately:
 
-# Terminal 2 — Next.js on :3000
+### Terminal 1
+```bash
+npm run server
+```
+
+### Terminal 2
+```bash
 npm run dev
 ```
 
-### 3. Open the app
-```
+---
+
+## 4️⃣ Open Application
+
+```bash
 http://localhost:3000
 ```
 
-### 4. Demo credentials
-```
-Email:    admin@techcorp.in
+---
+
+# 🔑 Demo Credentials
+
+```bash
+Email: admin@techcorp.in
 Password: Admin@123
 ```
 
 ---
 
-## 🔐 JWT Flow
-
-1. **Login/Signup** → POST `/api/auth/login` (Next.js API route)
-2. API route validates credentials against json-server `/users`
-3. Signs a JWT with `jose` (Edge-compatible), returns `{ token, user }`
-4. Redux stores token in state + `js-cookie` sets `auth_token` cookie
-5. **Next.js Middleware** intercepts every `/dashboard/*` request, verifies JWT
-6. Axios interceptor attaches `Bearer token` to all API calls
-7. **Logout** clears cookie + Redux state, redirects to login
-
----
-
-## 📊 Mock Data (db.json)
-
-- 15 employees across Engineering, Product, Design, Analytics, Marketing, Sales, HR
-- 12 months of revenue/expenses/profit data
-- 12 months of user growth/churn data
-- 1 admin user (add more via signup)
-
-json-server supports pagination via `?_page=1&_limit=8` and filtering via `?department=Engineering`.
-
----
-
-## 🎨 Design
-
-- **Dark theme** with CSS variables throughout
-- **Syne** (display) + **DM Sans** (body) fonts
-- Glass morphism cards with border glow
-- Smooth animations and skeleton loaders
-- Fully responsive layout (mobile: sidebar hidden)
-
----
-
-## 🗂 Key Interview Points
+# 📈 Key Functionalities
 
 | Feature | Implementation |
 |---|---|
-| Auth | JWT via jose, stored in cookie, Next.js middleware |
-| Protected routes | `middleware.ts` — verifyToken on every request |
-| State management | Redux Toolkit with typed hooks |
-| Async actions | `createAsyncThunk` for all API calls |
-| Form validation | react-hook-form + Zod schemas |
-| Debounce | Custom `useDebounce` hook, 450ms |
-| Pagination | Server-side via json-server `_page/_limit` |
-| Filters | Controlled in Redux, refetch on change |
-| Charts | Recharts — Area, Bar, Line, Pie |
+| Protected Routes | Next.js Middleware |
+| Authentication | JWT + jose |
+| Global State | Redux Toolkit |
+| Async API Calls | createAsyncThunk |
+| Form Validation | React Hook Form + Zod |
+| API Communication | Axios |
+| Debounced Search | Custom Hook |
+| Charts | Recharts |
+| Pagination | json-server |
+
+---
+
+# ⏱ Time Taken
+
+| Module | Approx Time |
+|---|---|
+| Project Setup & Architecture | 3 hrs |
+| Authentication System | 4 hrs |
+| Employee CRUD | 5 hrs |
+| Analytics Dashboard | 4 hrs |
+| UI Design & Responsiveness | 5 hrs |
+| Testing & Debugging | 2 hrs |
+
+### Total Time:
+# ~23 Hours
+
+---
+
+# 🚀 Future Improvements
+
+- Role-based access control
+- Real backend integration
+- Unit & integration testing
+- Exportable reports
+- Real-time notifications
+- Drag-and-drop widgets
+- Theme switcher
+
+---
+
+# 📄 Submission Details
+
+
+```
+
+---
+
+# 👨‍💻 Author
+
+Built by **Ayush Thapliyal** using modern frontend engineering practices and scalable architecture principles.
